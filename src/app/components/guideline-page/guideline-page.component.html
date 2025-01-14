@@ -1,0 +1,73 @@
+<div class="bg-gradient-to-br from-gray-100 to-gray-200 min-h-screen py-12 px-6">
+
+  <nav>
+    <a [routerLink]="'/tasklist'" class="bg-slate-500">tasklist nav</a>
+  </nav>
+    <div class="max-w-5xl mx-auto bg-white shadow-lg rounded-lg p-8">
+      <h1 class="text-4xl font-bold text-blue-600 text-center mb-8">
+        Do's and Don'ts for Using Router with Tailwind CSS
+      </h1>
+      <p class="text-gray-700 text-lg text-center mb-12">
+        Follow these best practices to make your project clean, efficient, and visually appealing.
+      </p>
+  
+      <div class="mb-12">
+        <h2 class="text-3xl font-semibold text-green-500 mb-4">✅ Do's</h2>
+        <ul class="list-disc list-inside text-gray-700 space-y-4">
+          <li>
+            <span class="font-semibold text-gray-900">Use semantic routes:</span> 
+            Name your routes meaningfully to ensure clarity (e.g., <code>/about</code>, <code>/contact</code>).
+          </li>
+          <li>
+            <span class="font-semibold text-gray-900">Apply responsive designs:</span>
+            Use Tailwind utilities like <code>flex</code>, <code>grid</code>, and <code>space-y-4</code> to build layouts that adapt to different screen sizes.
+          </li>
+          <li>
+            <span class="font-semibold text-gray-900">Style active links:</span> 
+            Highlight the current page using <code>active</code> or <code>font-bold</code> classes.
+          </li>
+          <li>
+            <span class="font-semibold text-gray-900">Keep your routes modular:</span> 
+            Define individual components for each route to maintain a clean structure.
+          </li>
+          <li>
+            <span class="font-semibold text-gray-900">Use Tailwind's custom themes:</span>
+            Configure the <code>tailwind.config.js</code> file for custom colors, fonts, and spacing.
+          </li>
+        </ul>
+      </div>
+  
+      <div class="mb-12">
+        <h2 class="text-3xl font-semibold text-red-500 mb-4">❌ Don'ts</h2>
+        <ul class="list-disc list-inside text-gray-700 space-y-4">
+          <li>
+            <span class="font-semibold text-gray-900">Don’t hardcode inline styles:</span> 
+            Use Tailwind classes for consistent and reusable styling.
+          </li>
+          <li>
+            <span class="font-semibold text-gray-900">Don’t overcrowd your components:</span>
+            Avoid adding too much logic or markup in one component. Break them into smaller, reusable parts.
+          </li>
+          <li>
+            <span class="font-semibold text-gray-900">Don’t neglect accessibility:</span> 
+            Ensure your navigation and pages are screen-reader friendly by using proper ARIA attributes.
+          </li>
+          <li>
+            <span class="font-semibold text-gray-900">Don’t overuse global styles:</span> 
+            Stick to utility-first styling with Tailwind instead of adding unnecessary CSS overrides.
+          </li>
+          <li>
+            <span class="font-semibold text-gray-900">Don’t ignore unused styles:</span> 
+            Purge unused Tailwind classes in production to keep your build lightweight.
+          </li>
+        </ul>
+      </div>
+  
+      <div class="border-t border-gray-300 pt-6 text-center">
+        <p class="text-gray-500">
+          "Consistency in styling and routing leads to better user experiences."
+        </p>
+      </div>
+    </div>
+  </div>
+  

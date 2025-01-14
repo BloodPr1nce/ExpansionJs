@@ -1,0 +1,70 @@
+<div class="relative p-6 bg-gray-100 rounded-lg shadow-md max-w-auto mx-auto">
+  <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Task List</h2>
+  <nav>
+  <a [routerLink]="'/guidelines'" class="bg-slate-600">guidelines nav</a>
+  <!-- always keep in mind that not to use anything else other than <routerOutlet></routerOutlet> in the app.component.html if you use any other template there then it will render the other template but then both the two template will be on the same page which is not what wew want -->
+  <!-- <a [routerLink]="guidelines">guidelines</a> -->
+<!-- when you want to dynamically change the adrress -->
+
+  </nav>
+
+  <div class="flex space-x-4 mb-6">
+
+    <button (click)="showAll()"
+      class="left-0 px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 focus:outline-none">
+      Show All
+    </button>
+    <button (click)="showCompleted()"
+      class="px-4 py-2 bg-green-500 text-white font-medium rounded-md hover:bg-green-600 focus:outline-none">
+      Show Completed
+    </button>
+    <button (click)="showPending()"
+      class="px-4 py-2 bg-red-500 text-white font-medium rounded-md hover:bg-red-600 focus:outline-none">
+      Show Pending
+    </button>
+    <button
+      (click)="addTask()"
+      class="px-4 py-2 bg-orange-500 text-white font-medium rounded-md hover:bg-orange-600 focus:outline-none">
+      Add Task
+    </button>
+
+    <div class="right-0 flex-row mt-5 p-1 space-y-4">
+      <div class="flex-col">
+        <h1 class="text-md">Name</h1>
+        <input  [(ngModel)]="name" class="h-[3vh] w-full border-black border-2" />
+        <p>this is typed {{name}}</p>
+      </div>
+      <div class="flex-col">
+        <h1 class="text-md">Description</h1>
+        <input [(ngModel)]="description" class="w-full h-[3vh] border-black border-2" />
+        <p>this is typed {{description}}</p>
+      </div>
+      <div class="flex-col">
+        <h1 class="text-md">Due-Date</h1>
+        <!-- <input class="h-[3vh] w-full border-black border-2" /> -->
+        <h2 class="font-bold text-sm">{{ currentDate}}</h2>
+      </div>
+      <div class="flex-col">
+        <h1 class="text-md">Status</h1>
+        <input class="h-[3vh] w-full border-black border-2" />
+      </div>
+    </div>
+  
+  </div>
+
+  <ul class="space-y-4">
+    <li *ngFor="let task of filteredTasks | sortTasks"
+      class="flex justify-between items-center p-4 bg-white rounded-lg shadow-md">
+      <span [class.text-gray-500]="task.status" [class.text-red-600]="task.status" class="font-medium">
+        <!-- ternary is like [class.style] = "typescript logic" -->
+        {{ task.description }} - <span class="text-sm text-gray-600">{{ task.dueDate.getTime() | date }}</span>
+      </span>
+      <button (click)="toggleStatus(task.id)"
+        class="px-3 py-1 bg-indigo-500 text-white text-sm font-medium rounded-md hover:bg-indigo-600 focus:outline-none">
+        {{task.status}}
+      </button>
+    </li>
+  </ul>
+
+  <app-weather></app-weather>
+</div>
