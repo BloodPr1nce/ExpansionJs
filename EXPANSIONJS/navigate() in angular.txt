@@ -1,0 +1,111 @@
+
+In Angular, you can use the Router to navigate between different pages or components within your application. This is typically done by defining routes in your Angular module and using the Router service to perform the navigation.
+
+Here's a step-by-step guide to using the Angular Router:
+
+1. Set Up Routing in Your Application
+Create Components: First, create the components that you will navigate between.
+
+Example:
+
+bash
+Copy code
+ng generate component home
+ng generate component about
+ng generate component contact
+Set Up Routes: Define routes in the app-routing.module.ts file.
+
+typescript
+Copy code
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
+import { ContactComponent } from './contact/contact.component';
+
+const routes: Routes = [
+  { path: '', component: HomeComponent },  // Default route
+  { path: 'about', component: AboutComponent },
+  { path: 'contact', component: ContactComponent }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule {}
+In this setup, we have three routes:
+
+Home (default path)
+About (/about)
+Contact (/contact)
+Import AppRoutingModule: Now, you need to import AppRoutingModule into the main module (app.module.ts).
+
+typescript
+Copy code
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppRoutingModule } from './app-routing.module'; // Import AppRoutingModule
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule // Add to imports array
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+2. Use RouterLink for Navigation in Templates
+You can now use the RouterLink directive to link to different routes within your templates.
+
+Example (in app.component.html):
+
+html
+Copy code
+<nav>
+  <a routerLink="/">Home</a>
+  <a routerLink="/about">About</a>
+  <a routerLink="/contact">Contact</a>
+</nav>
+
+<!-- Router outlet where the routed components will be displayed -->
+<router-outlet></router-outlet>
+The routerLink directive is used to navigate to different paths (e.g., /about, /contact).
+The <router-outlet></router-outlet> tag is where the routed components will be displayed.
+3. Programmatically Navigate with the Router Service
+If you want to navigate programmatically (e.g., from a component's TypeScript file), you can inject the Router service and use its navigate() method.
+** used for wildcard routing
+navigating using navigate() in angular
+
+Example (in home.component.ts):
+
+typescript
+Copy code
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
+})
+export class HomeComponent {
+
+  constructor(private router: Router) {}
+
+  goToAbout() {
+    this.router.navigate(['/about']);  // Navigate to the About page
+  }
+}
+In this case, when goToAbout() is called (e.g., on a button click), the router will navigate to the /about route.
+
+Example (in home.component.html):
+
+html
+Copy code
+<button (click)="goToAbout()">Go to About Page</button>

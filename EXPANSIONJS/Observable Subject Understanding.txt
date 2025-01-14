@@ -1,0 +1,42 @@
+import { BehaviorSubject } from 'rxjs';
+
+// Subject: Weather Station
+class WeatherStation {
+  private temperatureSubject = new BehaviorSubject<number>(25); // Initial temperature
+
+  // Observable for observers to subscribe to
+  temperature$ = this.temperatureSubject.asObservable();
+
+  // Method to update the temperature
+  setTemperature(temp: number): void {
+    console.log(`WeatherStation: Temperature updated to ${temp}°C`);
+    this.temperatureSubject.next(temp); // Notify all observers
+  }
+}
+
+// Observer: Phone Display
+class PhoneDisplay {
+  constructor(weatherStation: WeatherStation) {
+    weatherStation.temperature$.subscribe((temp) => {
+      console.log(`PhoneDisplay: Received temperature update: ${temp}°C`);
+    });
+  }
+}
+
+// Observer: Window Display
+class WindowDisplay {
+  constructor(weatherStation: WeatherStation) {
+    weatherStation.temperature$.subscribe((temp) => {
+      console.log(`WindowDisplay: Received temperature update: ${temp}°C`);
+    });
+  }
+}
+
+// Usage
+const weatherStation = new WeatherStation();
+
+const phoneDisplay = new PhoneDisplay(weatherStation); // Observer 1
+const windowDisplay = new WindowDisplay(weatherStation); // Observer 2
+
+weatherStation.setTemperature(30); // Notify observers
+weatherStation.setTemperature(35); // Notify observers

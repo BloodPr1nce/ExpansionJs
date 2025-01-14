@@ -1,0 +1,86 @@
+import { Observable } from 'rxjs';
+
+// Custom operator to square the values
+function square() {
+  return (source$: Observable<number>) =>
+    new Observable<number>((subscriber) => {
+      source$.subscribe({
+        next: (value) => subscriber.next(value * value),
+        error: (err) => subscriber.error(err),
+        complete: () => subscriber.complete(),
+      });
+    });
+}
+
+// Custom operator to take the square again
+function againsquare() {
+  return (source$: Observable<number>) =>
+    new Observable<number>((subscriber) => {
+      source$.subscribe({
+        next: (value) => subscriber.next(value * value),
+        error: (err) => subscriber.error(err),
+        complete: () => subscriber.complete(),
+      });
+    });
+}
+
+// Custom operator to divide values by a constant
+function divide(divisor: number) {
+  return (source$: Observable<number>) =>
+    new Observable<number>((subscriber) => {
+      source$.subscribe({
+        next: (value) => subscriber.next(value / divisor),
+        error: (err) => subscriber.error(err),
+        complete: () => subscriber.complete(),
+      });
+    });
+}
+
+
+import { of } from 'rxjs';
+
+const numbers$ = of(2, 4, 6);
+
+numbers$
+  .pipe(
+    square(),       // Square each number
+    againsquare(),  // Square the squared value
+    divide(4)       // Divide by 4
+  )
+  .subscribe((result) => {
+    console.log(`Result: ${result}`);
+  });
+
+
+
+///whole different easy method
+
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+// Pure functions
+function square(val: number): number {
+  return val * val;
+}
+
+function againsquare(val: number): number {
+  return val * val;
+}
+
+function divide(val: number): number {
+  return val / 4;
+}
+
+// Using the functions with `map`
+const numbers$ = of(2, 4, 6);
+
+numbers$
+  .pipe(
+    map(square),       // Apply `square`
+    map(againsquare),  // Apply `againsquare`
+    map(divide)        // Apply `divide`
+  )
+  .subscribe((result) => {
+    console.log(`Result: ${result}`);
+  });
+
