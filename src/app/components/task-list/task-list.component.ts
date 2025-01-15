@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { TaskService } from '../../service/task.service';
+import { deactivateGuardInterface } from '../../guards/new-guards.guard';
 
 @Component({
   selector: 'app-task-list',
@@ -9,17 +10,26 @@ import { TaskService } from '../../service/task.service';
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css'
 })
-export class TaskListComponent implements OnInit{
+export class TaskListComponent implements OnInit, deactivateGuardInterface{
   
   currentDate = new Date();
   tasks: Task[] = [];
   filteredTasks: Task[] = [];
   name: string = "";
   description: string = "";
+  firstCreateTask: boolean = false; //create a task first then you can route only
 
   guidelines: string = '/guidelines'; //if you want to dynamically change the address
 
   constructor(private taskService: TaskService) {}
+
+  canDeactivate(): boolean {
+
+    if(this.firstCreateTask) {
+      return confirm("first create a todo list task"); //can use alert too
+    }
+    return false;
+  }
 
   ngOnInit() {
     this.tasks = this.taskService.getTasks();
@@ -45,6 +55,7 @@ export class TaskListComponent implements OnInit{
     this.filteredTasks = [...this.filteredTasks, obj];
     
     // for angular to see changes please you ... spread operator and push operator it wont understand it
+  
 
     console.log(this.filteredTasks);
 
@@ -57,6 +68,8 @@ export class TaskListComponent implements OnInit{
       status: false
     }
   );
+
+  this.firstCreateTask = true;
   }
 
   showAll() {
