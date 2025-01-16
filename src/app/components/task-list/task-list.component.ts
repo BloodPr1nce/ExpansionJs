@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { TaskService } from '../../service/task.service';
 import { deactivateGuardInterface } from '../../guards/new-guards.guard';
+import { map, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-task-list',
@@ -13,8 +14,8 @@ import { deactivateGuardInterface } from '../../guards/new-guards.guard';
 export class TaskListComponent implements OnInit, deactivateGuardInterface{
   
   currentDate = new Date();
-  tasks: Task[] = [];
-  filteredTasks: Task[] = [];
+  tasks: Observable<Task[]> = of([]);
+  filteredTasks: Observable<Task[]> = of([]);
   name: string = "";
   description: string = "";
   firstCreateTask: boolean = false; //create a task first then you can route only
@@ -44,46 +45,43 @@ export class TaskListComponent implements OnInit, deactivateGuardInterface{
   }
 
   addTask() {
-    const obj = {
-      id: this.tasks.length + 1,
-      name: this.name,
-      description: this.description,
-      dueDate: new Date(),
-      status: false
-    };
-
-    this.filteredTasks = [...this.filteredTasks, obj];
-    
-    // for angular to see changes please you ... spread operator and push operator it wont understand it
+    this.tasks.subscribe((tasksArray) => {
+      const obj = {
+        id: tasksArray.length + 1,
+        name: this.name,
+        description: this.description,
+        dueDate: new Date(),
+        status: false
+      };
   
-
-    console.log(this.filteredTasks);
-
-    this.taskService.addTask(
-    {
-      id: this.tasks.length + 1,
-      name: this.name,
-      description: this.description,
-      dueDate: new Date(),
-      status: false
-    }
-  );
-
-  this.firstCreateTask = true;
+      const updatedTasks = [...tasksArray, obj];
+      this.filteredTasks = of(updatedTasks);
+  
+  
+      console.log(updatedTasks);
+  
+      this.taskService.addTask(obj);
+      this.firstCreateTask = true;
+    });
   }
+  
 
   showAll() {
     this.filteredTasks = this.tasks;
   }
-
+  
   showCompleted() {
-    this.filteredTasks = this.tasks.filter((task) => task.status);
+    this.filteredTasks = this.tasks.pipe(
+      map((tasksArray) => tasksArray.filter((task) => task.status))
+    );
   }
-
-
+  
   showPending() {
-    this.filteredTasks = this.tasks.filter((task) => !task.status);
+    this.filteredTasks = this.tasks.pipe(
+      map((tasksArray) => tasksArray.filter((task) => !task.status))
+    );
   }
+  
 
   toggleStatus(id: number) {
     this.taskService.changeTaskStatus(id);
