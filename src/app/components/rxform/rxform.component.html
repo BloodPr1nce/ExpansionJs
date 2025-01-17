@@ -1,39 +1,49 @@
-<div class="login-container">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input
-                type="email"
-                id="email"
-                formControlName="email"
-                class="form-control"
-                placeholder="Enter your email"
-            />
-            <div *ngIf="f.get('email')?.touched && f.get('email')?.invalid" class="error">
-                <small *ngIf="f.get('email')?.errors?.['required']">Email is required</small>
-                <small *ngIf="f.get('email')?.errors?.['email']">Please enter a valid email address</small>
-            </div>
-        </div>
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input
-                type="password"
-                id="password"
-                formControlName="password"
-                class="form-control"
-                placeholder="Enter your password"
-            />
-            <div *ngIf="f.get('password')?.touched && f.get('password')?.invalid" class="error">
-                <small *ngIf="f.get('password')?.errors?.['required']">Password is required</small>
-                <small *ngIf="f.get('password')?.errors?.['minlength']">
-                    Password must be at least 6 characters
-                </small>
-            </div>
-        </div>
+@Component({
+  selector: 'app-rxform',
+  standalone: false,
+  
+  templateUrl: './rxform.component.html',
+  styleUrl: './rxform.component.css'
+})
+export class RxformComponent implements OnInit {
+  
+  loginForm!: FormGroup;
 
-        <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">
-            Login
-        </button>
-    </form>
-</div>
+  constructor(private formBuilder: FormBuilder) {
+    
+  }
+
+  ngOnInit(): void {
+    this.loginForm = this.formBuilder.group({
+      email: [
+        '',
+        [Validators.required, Validators.email], // Email is required and must be in email format
+      ],
+      password: [
+        '',
+        [Validators.required, Validators.minLength(6)], // Password is required and must be at least 6 characters
+      ],
+    });
+   
+    // this.loginForm = new FormGroup({
+    //   email: new FormControl('', [Validators.required, Validators.email]),
+    //   password: new FormControl('', [Validators.required, Validators.minLength(9)]),
+    // }); this approach is fine too both have same outcome
+
+  }
+
+  getFormControls() {
+    return this.loginForm.controls; //for easy use in template as instead of writing this.loginForm.contorls.email we can simply do f.email
+  }
+
+  onSubmit(): void {
+    if (this.loginForm.invalid) {
+      return; // Stop if form is invalid
+    }
+    console.log('Login successful', this.loginForm.value);
+  }
+
+}
