@@ -35,7 +35,7 @@ export class RxformComponent implements OnInit {
 
   }
 
-  get f() {
+  getFormControls() {
     return this.loginForm.controls; //for easy use in template as instead of writing this.loginForm.contorls.email we can simply do f.email
   }
 
