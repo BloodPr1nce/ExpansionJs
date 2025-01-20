@@ -1,0 +1,42 @@
+<!-- use formGroupName too -->
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" />
+      <div *ngIf="getCredentialsControls()['email'].touched && getCredentialsControls()['email'].invalid" class="error">
+        <div *ngIf="getCredentialsControls()['email'].errors?.['required']">Email is required.</div>
+        <div *ngIf="getCredentialsControls()['email'].errors?.['email']">Please enter a valid email.</div>
+      </div>
+    </div>
+  
+    <!-- nested -->
+    <div class="form-group">
+
+        <div>
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password" />
+        <div *ngIf="getCredentialsControls()['password'].touched && getCredentialsControls()['password'].invalid" class="error">
+          <div *ngIf="getCredentialsControls()['password'].errors?.['required']">Password is required.</div>
+          <div *ngIf="getCredentialsControls()['password'].errors?.['minlength']">
+            Password must be at least 6 characters long.
+          </div>
+        </div>
+      </div>
+  
+      <div>
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" type="password" formControlName="confirmPassword" />
+        <div *ngIf="getCredentialsControls()['confirmPassword'].touched && getCredentialsControls()['confirmPassword'].invalid" class="error">
+          <div *ngIf="getCredentialsControls()['confirmPassword'].errors?.['required']">Confirm Password is required.</div>
+          <div *ngIf="getCredentialsControls()['confirmPassword'].errors?.['passwordMismatch']">Passwords do not match.</div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <button type="submit" [disabled]="form.invalid">Submit</button>
+    </div>
+  </form>
+  
